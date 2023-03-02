@@ -1,20 +1,76 @@
-# Transcription Benchmark
+# Speech-to-Text Using OpenAI
 
-This script transcribes an audio file using the OpenAI API and saves the result to a text file. It also measures the execution time of the transcription process.
+This is the technical documentation for the Speech-to-Text web app, which allows users to upload an MP3 audio file and receive a transcription of the audio as text.
 
-## Usage
+## Technologies Used
 
-1. Set your OpenAI API key in a `.env` file.
+The following technologies were used to build this web app:
 
-2. Run the script with the following command: `python whisper.py`.
+- Python (programming language)
+- Flask (web framework)
+- OpenAI API (for speech transcription)
+- HTML, CSS, and JavaScript (for the front-end)
 
-## Parameters
+## Requirements
 
-The script takes the following parameters:
+Before running the app, make sure you have the following installed:
 
-- `file_path`: The path of the audio file to transcribe.
+- Python 3.x
+- Flask (`pip install Flask`)
+- openai (`pip install openai`)
+- pydub (`pip install pydub`)
 
-- `model`: The OpenAI API model to use for transcription. The default value is "whisper-1".
+Also, you will need to set up an account on the OpenAI platform to obtain an API key. 
+
+## Installation and Setup
+
+1. Clone the repository onto your local machine.
+
+2. Set up a virtual environment for the app using the following command: 
+
+    ```
+    python -m venv venv
+    ```
+
+3. Activate the virtual environment using the following command:
+
+    ```
+    source venv/bin/activate
+    ```
+
+4. Install the required Python packages using the following command:
+
+    ```
+    pip install -r requirements.txt
+    ```
+
+5. Export your OpenAI API key as an environment variable with the following command:
+
+    ```
+    export OPENAI_API_KEY=<your-api-key>
+    ```
+
+6. Start the Flask server by running the following command:
+
+    ```
+    python app.py
+    ```
+7. Open a web browser and navigate to `http://localhost:5000` to use the app.
+
+## File Structure
+
+The file structure for the app is as follows:
+
+.
+├── app.py
+├── requirements.txt
+├── static
+│ ├── css
+│ │ └── styles.css
+│ └── js
+│ └── scripts.js
+└── templates
+└── index.html
 
 ## Example result song from collar (off/on)
 ```
@@ -22,13 +78,23 @@ The script takes the following parameters:
 ```
 
 
+- `app.py`: the main Python file that runs the Flask app and handles the back-end logic
+- `requirements.txt`: a list of required Python packages
+- `static`: a directory containing static files (CSS and JavaScript)
+- `templates`: a directory containing HTML templates for the app
 
-## Output
+## Flask Endpoints
 
-The script saves the transcription result to a text file named `transcription.txt` and prints the transcription and execution time to the console.
+The app has the following Flask endpoints:
 
-## Dependencies
+- `/`: serves the index.html file
+- `/transcribe`: handles file upload and transcription
+- `/download/<path:filename>`: downloads a transcription file
 
-- `openai`: The OpenAI API client library.
+## How it Works
 
-- `python-dotenv`: A library for loading environment variables from a `.env` file.
+1. User uploads an MP3 file on the app.
+2. The app checks if the file is an MP3 file.
+3. If the file is an MP3 file, the app converts it to MP3 format and transcribes the audio using the OpenAI API.
+4. The transcription is saved as a text file.
+5. The app displays a link to download the transcription file.
