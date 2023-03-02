@@ -9,12 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const downloadLink = document.getElementById("download-link");
   const dropArea = document.getElementById("drop-area");
   const link = document.getElementById("link");
+
   // Show loading icon and hide other elements
   function showLoading() {
-    chooseBtn.classList.add("hidden");
-    submitBtn.classList.add("hidden");
-    loadingIcon.classList.remove("hidden");
-  }
+  chooseBtn.classList.add("hidden");
+  submitBtn.classList.add("hidden");
+  loadingIcon.classList.remove("hidden");
+  processingText.classList.add("hidden");
+  downloadLink.classList.add("hidden");
+}
 
   // Show processing text and hide other elements
   function showProcessing() {
@@ -30,8 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show download link
   function showDownloadLink(url) {
-    link.href = url;
-    downloadLink.classList.remove("hidden");
+  downloadLink.href = url + "/transcription.txt";
+  loadingIcon.classList.add("hidden");
+  transcription.classList.remove("hidden");
+  downloadLink.classList.remove("hidden");
+}
+
+
+  // Show notification message
+  function showNotification(message) {
+    document.getElementById("notification-text").textContent = message;
+    document.getElementById("notification").classList.remove("hidden");
   }
 
   // Drag and drop file functionality
@@ -83,11 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const url = response.match(/href=['"]?([^'">]+)['"]?/)[1];
           showDownloadLink(url);
           showSubmitBtn();
+          showNotification("Transcription complete!");
         } else {
-          console.log("Error:", xhr.statusText);
+          showNotification("Error: " + xhr.statusText);
         }
       } else {
         showLoading();
+        showNotification("Uploading...");
       }
     };
     xhr.send(formData);
