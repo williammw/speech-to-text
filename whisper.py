@@ -44,6 +44,8 @@ end_time = time.time()
 # Save the transcription to a file
 save_transcription(transcription)
 
+print(transcription)
+
 # Calculate the execution time
 execution_time = end_time - start_time
 
