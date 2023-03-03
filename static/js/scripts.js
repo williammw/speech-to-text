@@ -9,41 +9,59 @@ document.addEventListener("DOMContentLoaded", () => {
   const downloadLink = document.getElementById("download-link");
   const dropArea = document.getElementById("drop-area");
   const link = document.getElementById("link");
+  const loadingText = document.getElementById("loading-text");
+  const resetBtn = document.getElementById("reset-btn");
+
+
 
   // Show loading icon and hide other elements
-  function showLoading() {
+function showProcessing() {
   chooseBtn.classList.add("hidden");
   submitBtn.classList.add("hidden");
   loadingIcon.classList.remove("hidden");
   processingText.classList.add("hidden");
   downloadLink.classList.add("hidden");
+  loadingText.classList.remove("hidden");
+  loadingText.classList.add("text-gray-500", "text-sm", "mt-2");
+  loadingIcon.classList.add("animate-spin", "h-5", "w-5", "mr-3");
+  chooseBtn.classList.add("cursor-not-allowed", "opacity-50");
+  submitBtn.classList.add("cursor-not-allowed", "opacity-50");
 }
 
+
   // Show processing text and hide other elements
-  function showProcessing() {
-    loadingIcon.classList.add("hidden");
-    processingText.classList.remove("hidden");
-  }
+  // function showProcessing() {
+  //   console.log('showProcessing');
+  //   loadingIcon.classList.add("hidden");
+  //   processingText.classList.remove("hidden");
+  // }
 
   // Show submit button and hide other elements
   function showSubmitBtn() {
-    processingText.classList.add("hidden");
+  console.log('showSubmitBtn');
+    console.log(submitBtn.classList);
+    resetBtn.classList.remove("hidden");
+  processingText.classList.add("hidden");
+  if (submitBtn.classList.contains("hidden")) {
     submitBtn.classList.remove("hidden");
   }
+}
 
   // Show download link
-  function showDownloadLink(url) {
-  downloadLink.href = url + "/transcription.txt";
+ function showDownloadLink(url) {
+  downloadLink.href = url;
   loadingIcon.classList.add("hidden");
-  transcription.classList.remove("hidden");
+  processingText.classList.add("hidden");
   downloadLink.classList.remove("hidden");
 }
 
 
   // Show notification message
   function showNotification(message) {
+    console.log('showNotification');
     document.getElementById("notification-text").textContent = message;
     document.getElementById("notification").classList.remove("hidden");
+    document.getElementById("transcription").classList.remove("hidden");
   }
 
   // Drag and drop file functionality
@@ -77,34 +95,47 @@ document.addEventListener("DOMContentLoaded", () => {
   audioInput.addEventListener("change", () => {
     uploadForm.dispatchEvent(new Event("submit"));
   });
-
-  // Form submit functionality
-  uploadForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(uploadForm);
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/transcribe");
-    xhr.upload.addEventListener("progress", (event) => {
-      const percent = (event.loaded / event.total) * 100;
-      document.getElementById("bar").style.width = percent + "%";
-    });
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          const response = xhr.responseText;
-          const url = response.match(/href=['"]?([^'">]+)['"]?/)[1];
-          showDownloadLink(url);
-          showSubmitBtn();
-          showNotification("Transcription complete!");
-        } else {
-          showNotification("Error: " + xhr.statusText);
-        }
-      } else {
-        showLoading();
-        showNotification("Uploading...");
-      }
-    };
-    xhr.send(formData);
-    showProcessing();
+  // Reset functionality
+  resetBtn.addEventListener("click", () => {
+    audioInput.value = "";
+    document.getElementById("bar").style.width = "0%";
+    document.getElementById("transcription-text").textContent = "";
+    document.getElementById("processing-text").classList.add("hidden");
+    document.getElementById("transcription").classList.add("hidden");
+    document.getElementById("submit-btn").classList.add("hidden");
+    document.getElementById("choose-btn").classList.remove("hidden");
+    document.getElementById("download-link").classList.add("hidden");
+    document.getElementById("notification").classList.add("hidden");
+    resetBtn.classList.add("hidden");
   });
+// Form submit functionality
+uploadForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(uploadForm);
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/transcribe");
+  xhr.upload.addEventListener("progress", (event) => {
+    // showLoading();
+    const percent = (event.loaded / event.total) * 100;
+    document.getElementById("bar").style.width = percent + "%";
+  });
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const response = xhr.responseText;
+        const url = response.match(/href=['"]?([^'">]+)['"]?/)[1];
+        showDownloadLink(url);
+        showSubmitBtn();
+        showNotification("Transcription complete!");
+      } else {
+        showNotification("Error: " + xhr.statusText);
+      }
+    } else {
+      // showLoading();
+      showNotification("Uploading...");
+    }
+  };
+  showProcessing();
+  xhr.send(formData);
+});
 });

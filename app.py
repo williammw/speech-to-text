@@ -42,6 +42,8 @@ def index():
 
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
+    # time.sleep(3)
+    # return "test"
     # Get the uploaded file from the request
     file = request.files.get("audio")
 
