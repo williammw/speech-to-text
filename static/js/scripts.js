@@ -49,7 +49,8 @@ function showProcessing() {
 
   // Show download link
  function showDownloadLink(url) {
-  downloadLink.href = url;
+   downloadLink.href = "/download/transcription"
+  //  url;
   loadingIcon.classList.add("hidden");
   processingText.classList.add("hidden");
   downloadLink.classList.remove("hidden");

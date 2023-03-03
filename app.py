@@ -28,15 +28,15 @@ def save_transcription(transcription_text, save_dir):
 
 # Initialize Flask app
 app = Flask(__name__)
-
+UPLOAD_FOLDER = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Define endpoint to serve index.html
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
-
-# Define endpoint to handle file upload and transcription
 
 # Define endpoint to handle file upload and transcription
 
@@ -55,7 +55,7 @@ def transcribe():
         audio = AudioSegment.from_file(file)
 
         # Split the audio file into 10-minute segments
-        segment_length = 10 * 60 * 1000  # 10 minutes in milliseconds
+        segment_length = 5 * 60 * 1000  # 10 minutes in milliseconds
         audio_segments = []
         for i in range(0, len(audio), segment_length):
             segment = audio[i:i+segment_length]
@@ -64,12 +64,12 @@ def transcribe():
         # Transcribe each audio segment using the Whisper API
         transcriptions = []
         for i, segment in enumerate(audio_segments):
-            with tempfile.NamedTemporaryFile(suffix='.mp3') as temp_file:
-                # Export the audio segment to a temporary file
-                segment.export(temp_file.name, format='mp3')
-
-                # Transcribe the audio using the OpenAI API
-                transcription = openai.Audio.transcribe("whisper-1", temp_file)
+            # Transcribe the audio using the OpenAI API
+            with NamedTemporaryFile(suffix='.mp3') as temp_audio_file:
+                segment.export(temp_audio_file.name, format='mp3')
+                transcription = openai.Audio.transcribe(
+                    "whisper-1", temp_audio_file)
+                print(transcription['text'])
                 transcriptions.append(transcription['text'])
 
         # Concatenate the transcriptions into a single string
@@ -86,21 +86,21 @@ def transcribe():
         execution_time = end_time - start_time
 
         # Return a response with a link to download the transcription file
-        return f"Transcription complete! Execution time: {execution_time} seconds. <a href='/download/{transcription_path}'>Download transcription</a>"
+        return f"Transcription complete! Execution time: {execution_time} seconds. <a href='/download/transcription'>Download transcription</a>"
     else:
         return "Invalid file format. Supported format: MP3"
 
 
-
 # Define endpoint to download transcription file
-@app.route("/download/<path:path>")
-def download(path):
+@app.route("/download/transcription")
+def download():
+    path = os.path.join(os.path.dirname(
+        os.path.abspath(__file__)), "transcription.txt")
     return send_file(
         path,
         as_attachment=True,
-        download_name=os.path.basename(path) or "transcription.txt",
-        max_age=0,
-        cache_timeout=0,
+        download_name="transcription",
+        max_age=0
     )
 
 
