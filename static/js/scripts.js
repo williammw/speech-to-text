@@ -22,7 +22,7 @@ function showProcessing() {
   processingText.classList.add("hidden");
   downloadLink.classList.add("hidden");
   loadingText.classList.remove("hidden");
-  loadingText.classList.add("text-gray-500", "text-sm", "mt-2");
+  loadingText.classList.remove("text-gray-500", "text-sm", "mt-2"); // remove these classes
   loadingIcon.classList.add("animate-spin", "h-5", "w-5", "mr-3");
   chooseBtn.classList.add("cursor-not-allowed", "opacity-50");
   submitBtn.classList.add("cursor-not-allowed", "opacity-50");
@@ -83,7 +83,9 @@ function showProcessing() {
     e.preventDefault();
     dropArea.classList.remove("hover");
     const file = e.dataTransfer.files[0];
-    audioInput.files = [file];
+    // document.getElementById("audio").files = [file];
+    document.getElementById("audio").files = e.dataTransfer.files;
+
     uploadForm.dispatchEvent(new Event("submit"));
   });
 
@@ -106,6 +108,11 @@ function showProcessing() {
     document.getElementById("choose-btn").classList.remove("hidden");
     document.getElementById("download-link").classList.add("hidden");
     document.getElementById("notification").classList.add("hidden");
+    document.getElementById("loading-text").classList.add("hidden");
+    
+    chooseBtn.classList.remove("cursor-not-allowed", "opacity-50");
+
+    // choose-btn
     resetBtn.classList.add("hidden");
   });
 // Form submit functionality

@@ -20,3 +20,6 @@ This is a Flask web application for speech to text transcription using OpenAI's 
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more information.
+
+## Sample Sound Source 
+* 立法會主席於新春午宴致辭 (2023/02/17)
