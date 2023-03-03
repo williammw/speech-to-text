@@ -63,13 +63,21 @@ def transcribe():
 
         # Transcribe each audio segment using the Whisper API
         transcriptions = []
+        combined_segment = None
         for i, segment in enumerate(audio_segments):
+            # Combine segment with previous segment(s) if length is less than segment length
+            if combined_segment is not None and len(combined_segment) + len(segment) < segment_length:
+                combined_segment += segment
+                continue
+            elif combined_segment is not None:
+                segment = combined_segment + segment
+                combined_segment = None
+
             # Transcribe the audio using the OpenAI API
             with NamedTemporaryFile(suffix='.mp3') as temp_audio_file:
                 segment.export(temp_audio_file.name, format='mp3')
                 transcription = openai.Audio.transcribe(
                     "whisper-1", temp_audio_file)
-                print(transcription['text'])
                 transcriptions.append(transcription['text'])
 
         # Concatenate the transcriptions into a single string

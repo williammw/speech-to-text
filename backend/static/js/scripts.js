@@ -98,6 +98,11 @@ function showProcessing() {
   audioInput.addEventListener("change", () => {
     uploadForm.dispatchEvent(new Event("submit"));
   });
+//   function showTranscription(transcription) {
+//   const transcriptionText = document.getElementById("transcription-text");
+//   transcriptionText.textContent = transcription;
+//   document.getElementById("transcription").classList.remove("hidden");
+// }
   // Reset functionality
   resetBtn.addEventListener("click", () => {
     audioInput.value = "";
@@ -144,6 +149,6 @@ uploadForm.addEventListener("submit", (e) => {
     }
   };
   showProcessing();
-  xhr.send(formData);
+  xhr.send(formData)
 });
 });
