@@ -5,6 +5,8 @@ import { setDownloadLink } from "../apiSlice";
 import { useSelector } from "react-redux";
 import { selectApiState } from "../apiSlice";
 import DownloadButton from "../components/DownloadButton";
+import TranscriptionEditor from "../components/TranscriptionEditor";
+
 const UploadForm = () => {
   const fileInput = useRef(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -12,9 +14,12 @@ const UploadForm = () => {
   const [error, setError] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showEditor, setShowEditor] = useState(false);
+  const [transcriptionCompleted, setTranscriptionCompleted] = useState(false);
+
   const dispatch = useDispatch();
-const { downloadLink } =
-    useSelector(selectApiState);
+  const { downloadLink } = useSelector(selectApiState);
+
   const handleUpload = async (event) => {
     event.preventDefault();
     setError(null);
@@ -32,66 +37,60 @@ const { downloadLink } =
     setIsUploading(true);
 
     try {
-  const response = await axios.post(
-    `${process.env.REACT_APP_API_URL}/transcribe`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress: (progressEvent) => {
-        const progress = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        setUploadProgress(progress);
-      },
-    }
-  );
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/transcribe`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(progress);
+          },
+        }
+      );
 
-  console.log(response.data);
-  dispatch(setDownloadLink(response.data)); // dispatch setDownloadLink action with the download link value
-} catch (error) {
-  console.error(error);
-  setError("An error occurred while uploading the file.");
-}
+      console.log(response.data);
+      dispatch(setDownloadLink(response.data));
+      setShowEditor(true);
+      setTranscriptionCompleted(true);
+    } catch (error) {
+      console.error(error);
+      setError("An error occurred while uploading the file.");
+    }
 
     setIsUploading(false);
   };
 
   const handleDragEnter = (event) => {
-    console.log('1')
     event.preventDefault();
     setDragging(true);
   };
 
   const handleDragLeave = (event) => {
-    console.log('2')
     event.preventDefault();
     setDragging(false);
   };
 
   const handleDragOver = (event) => {
-    console.log('3')
     event.preventDefault();
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     setDragging(false);
-    const droppedFile = event.dataTransfer.files[0];
-    const fileList = new DataTransfer();
-    fileList.items.add(droppedFile);
-    fileInput.current.files = fileList.files;
-    setSelectedFile(droppedFile);
+    fileInput.current.files = event.dataTransfer.files;
   };
-
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-100 rounded-md shadow-md">
       <h2 className="text-lg font-medium mb-4">Upload an audio file</h2>
       <form onSubmit={handleUpload}>
         <div
-          className={`border-4 ${
+          className={`border-2 ${
             dragging ? "border-green-500" : "border-gray-300"
           } rounded-md py-6 px-4 mb-4`}
           onDragEnter={handleDragEnter}
@@ -145,12 +144,11 @@ const { downloadLink } =
             Select
           </button> */}
           {selectedFile && (
-            <p className="text-gray-500 text-lg text-center mt-2">{selectedFile.name}</p>
+            <p className="text-gray-500 text-lg text-center mt-2">
+              {selectedFile.name}
+            </p>
           )}
-
-          {error && (
-            <p className="text-red-500 text-sm mt-2">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
         {isUploading && (
           <div className="mb-4">
@@ -160,15 +158,41 @@ const { downloadLink } =
             <progress value={uploadProgress} max="100" className="w-full" />
           </div>
         )}
-        <button
-          type="submit"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded"
-          disabled={isUploading || !selectedFile}
-        >
-          {isUploading ? "Uploading..." : "Upload"}
-        </button>
+        <div className="flex justify-between">
+          <div className="mt-4">
+            <button
+              type="submit"
+              className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded"
+              disabled={isUploading || !selectedFile}
+            >
+              {isUploading ? "Uploading..." : "Upload"}
+            </button>
+          </div>
+          {downloadLink && (
+            <div className="mt-4">
+              <DownloadButton downloadLink />
+            </div>
+          )}
+          {transcriptionCompleted && (
+            <div className="mt-4">
+              <button
+                type="button"
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded ml-4"
+                onClick={() => setShowEditor(true)}
+              >
+                Open editor
+              </button>
+            </div>
+          )}
+        </div>
       </form>
-      {downloadLink && <DownloadButton downloadLink={downloadLink} />}
+      {showEditor && (
+        <TranscriptionEditor
+          showEditor={showEditor}
+          setShowEditor={setShowEditor}
+          handleClose={() => setShowEditor(false)}
+        />
+      )}
     </div>
   );
 };

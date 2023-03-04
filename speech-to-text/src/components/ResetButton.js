@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function ResetButton() {
-  return (
-    <div>ResetButton</div>
-  )
+  return <div>ResetButton</div>;
 }
 
-export default ResetButton
+export default ResetButton;

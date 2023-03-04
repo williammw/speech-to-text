@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function TranscriptionText() {
-  return (
-    <div>TranscriptionText</div>
-  )
+  return <div>TranscriptionText</div>;
 }
 
-export default TranscriptionText
+export default TranscriptionText;
