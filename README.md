@@ -1,9 +1,6 @@
 # Project Name
 
-<video width="320" height="240" controls>
-  <source src="https://github.com/williammw/speech-to-text/blob/master/test/input.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video> 
+![glance](test/output.gif)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
