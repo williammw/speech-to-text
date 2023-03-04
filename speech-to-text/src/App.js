@@ -11,13 +11,23 @@ function App() {
     useSelector(selectApiState);
 
   return (
-    <div className="mx-auto max-w-4xl my-8">
-      <h1 className="text-3xl font-bold mb-4">Speech to Text Transcription</h1>
-      <UploadForm />
-      {isLoading && <ProgressBar progress={progress} />}
-      {transcription && <TranscriptionText transcription={transcription} />}
-      {error && <p className="text-red-500">{error}</p>}
-      {transcription && <ResetButton />}
+    <div className="App">
+      <header className="bg-gray-800 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-white">
+            Speech to Text Transcription
+          </h1>
+        </div>
+      </header>
+      <main className="my-8">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <UploadForm />
+          {isLoading && <ProgressBar progress={progress} />}
+          {transcription && <TranscriptionText transcription={transcription} />}
+          {error && <p className="text-red-500">{error}</p>}
+          {transcription && <ResetButton />}
+        </div>
+      </main>
     </div>
   );
 }
