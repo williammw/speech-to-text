@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectApiState } from "../apiSlice";
 import DownloadButton from "../components/DownloadButton";
 import TranscriptionEditor from "../components/TranscriptionEditor";
+import { FaCloudUploadAlt, FaSpinner, FaPencilAlt } from "react-icons/fa";
 
 const UploadForm = () => {
   const fileInput = useRef(null);
@@ -165,7 +166,19 @@ const UploadForm = () => {
               className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded"
               disabled={isUploading || !selectedFile}
             >
-              {isUploading ? "Uploading..." : "Upload"}
+              {isUploading ? (
+                <>
+                  <div className="flex items-center justify-center">
+                    <FaSpinner className="mr-2" />
+                    <span>Uploading ...</span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center justify-center">
+                  <FaCloudUploadAlt className="mr-2" />
+                  <span>Upload</span>
+                </div>
+              )}
             </button>
           </div>
           {downloadLink && (
@@ -180,7 +193,7 @@ const UploadForm = () => {
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded ml-4"
                 onClick={() => setShowEditor(true)}
               >
-                Open editor
+                <FaPencilAlt /> Open editor
               </button>
             </div>
           )}
