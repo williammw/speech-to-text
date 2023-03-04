@@ -3,7 +3,7 @@
 <video width="320" height="240" controls>
   <source src="test/input.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video>
+</video> 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
