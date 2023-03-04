@@ -8,6 +8,7 @@ import time
 from pydub import AudioSegment
 import json
 import uuid
+from flask_cors import CORS
 
 # Load environment variables from .env file
 load_dotenv()
@@ -33,6 +34,7 @@ UPLOAD_FOLDER = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Define endpoint to serve index.html
+CORS(app)
 
 
 @app.route("/")
@@ -42,7 +44,7 @@ def index():
 # Define endpoint to handle file upload and transcription
 
 
-@app.route("/transcribe", methods=["POST"])
+@app.route("/api/transcribe", methods=["POST"])
 def transcribe():
     # Get the uploaded file from the request
     file = request.files.get("audio")
@@ -112,6 +114,18 @@ def download():
         download_name=download_name,
         max_age=0
     )
+
+# Define endpoint to return transcriptions as JSON
+
+
+@app.route("/api/transcriptions")
+def transcriptions():
+    path = os.path.join(os.path.dirname(
+        os.path.abspath(__file__)), "transcription.txt")
+    with open(path, 'r') as f:
+        transcription_text = f.read()
+    transcriptions = transcription_text.split("\n")
+    return json.dumps(transcriptions)
 
 
 # Run the app

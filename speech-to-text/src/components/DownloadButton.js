@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
 
-function DownloadButton() {
+const DownloadButton = ({ downloadLink }) => {
   return (
-    <div>DownloadButton</div>
-  )
-}
+    <div className="mt-6">
+      <a
+        href={downloadLink}
+        download
+        className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded"
+      >
+        Download Transcript
+      </a>
+    </div>
+  );
+};
 
-export default DownloadButton
+export default DownloadButton;

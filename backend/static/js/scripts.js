@@ -126,7 +126,7 @@ uploadForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(uploadForm);
   const xhr = new XMLHttpRequest();
-  xhr.open("POST", "/transcribe");
+  xhr.open("POST", "/api/transcribe");
   xhr.upload.addEventListener("progress", (event) => {
     // showLoading();
     const percent = (event.loaded / event.total) * 100;
