@@ -187,13 +187,14 @@ const UploadForm = () => {
             </div>
           )}
           {transcriptionCompleted && (
-            <div className="mt-4">
+            <div className="mt-4 flex items-center">
               <button
                 type="button"
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded ml-4"
+                className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded ml-4 flex items-center"
                 onClick={() => setShowEditor(true)}
               >
-                <FaPencilAlt /> Open editor
+                <FaPencilAlt className="mr-2" />
+                <span>Open editor</span>
               </button>
             </div>
           )}
