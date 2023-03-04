@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import time
 from pydub import AudioSegment
 import json
+import uuid
 
 # Load environment variables from .env file
 load_dotenv()
@@ -104,10 +105,11 @@ def transcribe():
 def download():
     path = os.path.join(os.path.dirname(
         os.path.abspath(__file__)), "transcription.txt")
+    download_name = "transcription_" + str(uuid.uuid4())
     return send_file(
         path,
         as_attachment=True,
-        download_name="transcription",
+        download_name=download_name,
         max_age=0
     )
 
