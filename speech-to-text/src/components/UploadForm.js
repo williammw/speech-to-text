@@ -156,7 +156,16 @@ const UploadForm = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Uploading...
             </label>
-            <progress value={uploadProgress} max="100" className="w-full" />
+            <div className="w-full h-8 rounded-full bg-gray-300">
+              <div
+                className="h-8 rounded-full bg-indigo-500 animate-pulse"
+                style={{ width: `${uploadProgress}%` }}
+              >
+                {/* {uploadProgress === 100 && (
+                  <FaSpinner className="h-5 w-5 text-white animate-spin" />
+                )} */}
+              </div>
+            </div>
           </div>
         )}
         <div className="flex justify-between">
@@ -169,7 +178,9 @@ const UploadForm = () => {
               {isUploading ? (
                 <>
                   <div className="flex items-center justify-center">
-                    <FaSpinner className="mr-2" />
+                    {uploadProgress === 100 && (
+                      <FaSpinner className="h-5 w-5 mr-3 text-white animate-spin" />
+                    )}
                     <span>Uploading ...</span>
                   </div>
                 </>
