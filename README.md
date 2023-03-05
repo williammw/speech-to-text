@@ -33,3 +33,8 @@ To use this app, follow these steps:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+### test with another translation engine
+chatGPT : 314.60292196273804 seconds 
+unknow enginer : unkow second,
