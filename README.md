@@ -1,6 +1,8 @@
 # Project Name
 
-![glance](test/output.gif)
+![upload](test/output1.gif)
+![result](test/output2.gif)
+![processing](test/output3.gif)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
