@@ -1,4 +1,4 @@
-# Project Name
+# Speech-to-test using OpenAI-API
 
 ![upload](test/output1.gif)
 ![result](test/output2.gif)
