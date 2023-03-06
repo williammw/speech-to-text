@@ -23,3 +23,4 @@ X = vectorizer.fit_transform([words1, words2])
 cosine_sim = cosine_similarity(X)[0, 1]
 
 print('Cosine similarity between the two articles:', cosine_sim)
+# Cosine similarity between the two articles: 0.8954328809506952

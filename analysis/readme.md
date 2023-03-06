@@ -1,19 +1,8 @@
-## Text Similarity Analysis
+# explain
+The difference in similarity scores obtained from Doc2Vec and CountVectorizer may be due to the different methods used to represent the text documents.
 
-We compared the similarity between two long and complex Chinese articles using three different methods: **Doc2Vec**, **TF-IDF**, and **Simple TF-IDF**. 
+Doc2Vec uses a neural network to learn vector representations of each document, which takes into account not only the frequency of words but also the order in which they appear. This may be more suitable for capturing the semantic meaning of the text.
 
-### Method 1: Doc2Vec
+CountVectorizer, on the other hand, represents the documents as bag-of-words models, which only takes into account the frequency of words in the documents. This may be less effective for capturing the semantic meaning of the text, but can be useful for capturing the general content and topics of the documents.
 
-The first method used Doc2Vec model, which infers document vectors from the articles' tokens and computes their cosine similarity. The cosine similarity score between the two articles is **0.47109923**.
-
-### Method 2: TF-IDF
-
-The second method used the TF-IDF vectorizer to represent each article, which takes into account the importance of words in distinguishing between articles. The cosine similarity score between the two articles is **0.0007552870090634441**.
-
-### Method 3: Simple TF-IDF
-
-The third method used a simple TF-IDF vectorizer to represent each article as a bag-of-words model, and then computes the cosine similarity between the two articles based on the frequency of words they share. The cosine similarity score between the two articles is **0.1261650413399344**.
-
-The three methods use different ways to compute similarity, which may lead to different results. In general, Method 1 (Doc2Vec) and Method 2 (TF-IDF) are more commonly used and considered more accurate for text similarity tasks. However, in this case, the cosine similarity score from Method 1 is much higher than the other two methods, which may suggest that the two articles have more similar context than the other two methods indicate.
-
-Therefore, we recommend using multiple methods to compare the similarity between the two articles and carefully examining the results before drawing any conclusions.
+In your case, the difference in similarity scores may indicate that the two documents have similar content and topics, but may differ in their semantic meaning. It's important to note that the interpretation of the similarity score depends on the specific use case and the domain of the text.

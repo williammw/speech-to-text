@@ -27,3 +27,4 @@ article2_vec = model.infer_vector(article2_tokens)
 cosine_sim = model.docvecs.similarity('article1', 'article2')
 
 print("Cosine similarity between the two articles:", cosine_sim)
+# Cosine similarity between the two articles: 0.48345158
