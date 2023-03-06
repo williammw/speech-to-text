@@ -4,38 +4,73 @@ async-timeout==4.0.2
 asynctest==0.13.0
 attrs==22.2.0
 autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
-Bottleneck @ file:///opt/concourse/worker/volumes/live/d60669af-e41f-414a-5ae7-15dbf0f1c780/volume/bottleneck_1648028923597/work
-certifi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_477u68wvzm/croot/certifi_1671487773341/work/certifi
+blis==0.7.9
+catalogue==2.0.8
+certifi==2022.12.7
 charset-normalizer==3.0.1
-click @ file:///opt/concourse/worker/volumes/live/42b55757-67b9-4a67-4429-e65a7264b929/volume/click_1646056605766/work
-Flask @ file:///opt/conda/conda-bld/flask_1648041541647/work
+ChatterBot==1.0.8
+click==8.1.3
+confection==0.0.4
+cycler @ file:///home/conda/feedstock_root/build_artifacts/cycler_1635519461629/work
+cymem==2.0.7
+Cython @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_4dvukpunr8/croot/cython_1676559813303/work
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl
+Flask==2.2.3
+Flask-Cors==3.0.10
+fonttools==4.25.0
 frozenlist==1.3.3
+gensim @ file:///opt/concourse/worker/volumes/live/9262af44-16d0-4aca-6cd7-a5d0ef0d8cff/volume/gensim_1646824947226/work
+h11==0.14.0
 idna==3.4
-importlib-metadata @ file:///opt/concourse/worker/volumes/live/4e1a3384-472f-4bcb-7776-cb0076aaea40/volume/importlib-metadata_1648562431336/work
-itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
-Jinja2 @ file:///opt/conda/conda-bld/jinja2_1647436528585/work
-MarkupSafe @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_d4a9444f-bd4c-4043-b47d-cede33979b0fve7bm42r/croots/recipe/markupsafe_1654597878200/work
-mkl-fft==1.3.1
-mkl-random @ file:///opt/concourse/worker/volumes/live/133f1d0b-8fd8-4fa0-679e-7214401cbd75/volume/mkl_random_1626186083386/work
-mkl-service==2.4.0
+importlib-metadata==6.0.0
+itsdangerous==2.1.2
+jieba @ file:///home/conda/feedstock_root/build_artifacts/jieba_1622403007736/work
+Jinja2==3.1.2
+joblib @ file:///tmp/build/80754af9/joblib_1635411271373/work
+jsonify==0.5
+kiwisolver @ file:///Users/runner/miniforge3/conda-bld/kiwisolver_1657953277494/work
+langcodes==3.3.0
+MarkupSafe==2.1.2
+mathparse==0.1.2
+matplotlib @ file:///Users/runner/miniforge3/conda-bld/matplotlib-suite_1660353769378/work
 multidict==6.0.4
-numexpr @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_af4b0e04-04bd-4fbe-a784-5f99c0e1839bdms4cshf/croots/recipe/numexpr_1656071946025/work
-numpy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_10c245a1-1c81-453c-8b70-3e944787a8d9mo1xhesu/croots/recipe/numpy_and_numpy_base_1653915529188/work
+munkres==1.1.4
+murmurhash==1.0.9
+nltk @ file:///opt/conda/conda-bld/nltk_1645628263994/work
+numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1649806371302/work
 openai==0.27.0
-packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
-pandas==1.3.5
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1673482170163/work
+pathy==0.10.1
+Pillow==9.4.0
+preshed==3.0.8
 pycodestyle @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_a7riaf725h/croot/pycodestyle_1674267226642/work
-pydub @ file:///home/conda/feedstock_root/build_artifacts/pydub_1615612442567/work
-pyparsing @ file:///tmp/build/80754af9/pyparsing_1635766073266/work
-python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
-python-dotenv @ file:///home/conda/feedstock_root/build_artifacts/python-dotenv_1677227146928/work
-pytz @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_1caf090c-01b6-4973-adac-d2eb884a674e7zonb9eb/croots/recipe/pytz_1654762641285/work
+pydantic==1.10.5
+pydub==0.25.1
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1652235407899/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
+python-dotenv==0.21.1
+pytz==2022.7.1
+regex @ file:///opt/concourse/worker/volumes/live/f8007890-9446-4034-6933-fe20561040ef/volume/regex_1648447718419/work
 requests==2.28.2
-six @ file:///tmp/build/80754af9/six_1644875935023/work
+scikit-learn @ file:///opt/concourse/worker/volumes/live/4cd56902-441a-45fe-5fbc-9d70870a0183/volume/scikit-learn_1642617129649/work
+scipy @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_595zrwl1it/croots/recipe/scipy_1661390418356/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+smart-open @ file:///home/conda/feedstock_root/build_artifacts/smart_open_split_1673202927732/work/dist
+spacy==3.5.0
+spacy-legacy==3.0.12
+spacy-loggers==1.0.4
+SQLAlchemy==1.3.24
+srsly==2.4.5
+thinc==8.1.7
+threadpoolctl @ file:///Users/ktietz/demo/mc3/conda-bld/threadpoolctl_1629802263681/work
 toml @ file:///tmp/build/80754af9/toml_1616166611790/work
+tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1656938098105/work
 tqdm==4.64.1
-typing_extensions==4.5.0
+typer==0.7.0
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1665144421445/work
 urllib3==1.26.14
-Werkzeug @ file:///opt/conda/conda-bld/werkzeug_1645628268370/work
+uvicorn==0.20.0
+wasabi==1.1.1
+Werkzeug==2.2.3
 yarl==1.8.2
-zipp @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_b279673d-f037-44c7-8773-c5a6b6f51037d3wfr9cq/croots/recipe/zipp_1652341773612/work
+zipp==3.15.0
