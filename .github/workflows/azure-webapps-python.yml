@@ -20,23 +20,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python version
-        uses: actions/setup-python@v2
+      - name: Set up Conda
+        uses: conda-incubator/setup-conda@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
 
       - name: Create and start virtual environment
         run: |
-          cd backend
-          python -m venv venv
-          source venv/bin/activate
+          conda create --name myenv python=${{ env.PYTHON_VERSION }}
+          conda activate myenv
 
       - name: Install dependencies
-        run: |
-          cd backend
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: conda install --file backend/requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
