@@ -14,7 +14,7 @@ confection==0.0.4
 cycler
 cymem==2.0.7
 Cython
-en-core-web-sm==3.1.0
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl
 Flask==2.2.3
 Flask-Cors==3.0.10
 fonttools==4.25.0
