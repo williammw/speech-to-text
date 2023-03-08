@@ -1,7 +1,7 @@
 name: Build and deploy Python app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name  # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: openai-whisper-react-demo  # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: './backend'
   PYTHON_VERSION: '3.7'              # set this to the Python version to use
 
@@ -26,19 +26,17 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
-      - name: Move into backend directory
-        working-directory: backend
-        run: pwd
-
       - name: Create and start virtual environment
         run: |
+          cd backend
           python -m venv venv
           source venv/bin/activate
 
       - name: Install dependencies
         run: |
-        cd backend
-        pip install -r requirements.txt
+          cd backend
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
