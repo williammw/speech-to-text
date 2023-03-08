@@ -1,9 +1,11 @@
 name: Build and deploy Python app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: openai-whisper-react-demo  # set this to the name of your Azure Web App
-  AZURE_WEBAPP_PACKAGE_PATH: './backend'
-  PYTHON_VERSION: '3.7'              # set this to the Python version to use
+  WEBAPP_NAME: openai-whisper-react-demo
+  CONDA_ENV_NAME: openai-env
+  CONDA_PYTHON_VERSION: '3.7'
+  CONDA_CHANNELS: conda-forge
+  CONDA_DEPENDENCIES: pip
 
 on:
   push:
@@ -14,52 +16,31 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Conda
-        uses: conda-incubator/setup-conda@v2
+      - name: Set up Miniconda
+        uses: actions/setup-miniconda@v1
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          miniconda-version: 'latest'
 
-      - name: Create and start virtual environment
+      - name: Create Conda environment
         run: |
-          conda create --name myenv python=${{ env.PYTHON_VERSION }}
-          conda activate myenv
+          conda create --name ${{ env.CONDA_ENV_NAME }} python=${{ env.CONDA_PYTHON_VERSION }} -y
+          conda activate ${{ env.CONDA_ENV_NAME }}
+          conda config --add channels ${{ env.CONDA_CHANNELS }}
+          conda install ${{ env.CONDA_DEPENDENCIES }} -y
 
-      - name: Install dependencies
-        run: conda install --file backend/requirements.txt
+      - name: Install Python packages
+        run: |
+          pip install -r backend/requirements.txt
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v2
-        with:
-          name: python-app
-          path: backend
-
-  deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: python-app
-          path: .
-
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ env.WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: backend/
