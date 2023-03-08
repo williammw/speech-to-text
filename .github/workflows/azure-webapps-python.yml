@@ -26,9 +26,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
+      - name: Move into backend directory
+        working-directory: backend
+        run: pwd
+
       - name: Create and start virtual environment
         run: |
-          cd backend
           python -m venv venv
           source venv/bin/activate
 
