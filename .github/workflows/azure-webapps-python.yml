@@ -2,7 +2,6 @@ name: Build and deploy Python app to Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: openai-whisper-react-demo
-  AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }}/backend
   PYTHON_VERSION: '3.7'              
 
 on:
@@ -30,6 +29,7 @@ jobs:
         run: |
           python3 -m venv venv
           source venv/bin/activate
+
       - name: Install dependencies
         run: pip3 install -r backend/requirements.txt
 
@@ -39,27 +39,27 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: python-app
-          path: backend
+          path: backend/
 
   deploy:
-  permissions:
-    contents: none
-  runs-on: ubuntu-latest
-  needs: build
-  environment:
-    name: 'Development'
-    url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-  steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v2
-      with:
-        name: python-app
-        path: .
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: python-app
+          path: .
 
-    - name: 'Deploy to Azure Web App'
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        package: ./backend
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        slot-name: production
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ./backend
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          slot-name: production
