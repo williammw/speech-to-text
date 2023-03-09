@@ -89,31 +89,35 @@ app.post('/api/transcribe', upload.single('audio'), (req, res) => {
 
             // Calculate the execution time
             const executionTime = (endTime - startTime) / 1000;
-                    // Return a response with a link to download the transcription file
-        res.send(`Transcription complete! Execution time: ${executionTime} seconds. <a href='/download/transcription'>Download transcription</a>`);
+            // Return a response with a link to download the transcription file
+            res.send(`Transcription complete! Execution time: ${executionTime} seconds. <a href='/download/transcription'>Download transcription</a>`);
+          }
+        });
+      }
     });
-} else {
+  }// <--- Add this closing brace
+  else {
     res.status(400).send("Invalid file format. Supported format: MP3");
-}});
+  }
 
-// Define endpoint to download transcription file
-app.get('/download/transcription', (req, res) => {
-const path = path.join(__dirname, 'transcription.txt');
-const downloadName = `transcription_${uuidv4()}.txt`;
-res.download(path, downloadName);
-});
+  // Define endpoint to download transcription file
+  app.get('/download/transcription', (req, res) => {
+    const path = path.join(__dirname, 'transcription.txt');
+    const downloadName = `transcription_${uuidv4()}.txt`;
+    res.download(path, downloadName);
+  });
 
-// Define endpoint to return transcriptions as JSON
-app.get('/api/transcriptions', (req, res) => {
-const path = path.join(__dirname, 'transcription.txt');
-const transcriptionText = fs.readFileSync(path, 'utf-8');
-const transcriptions = transcriptionText.split('\n');
-res.json(transcriptions);
-});
+  // Define endpoint to return transcriptions as JSON
+  app.get('/api/transcriptions', (req, res) => {
+    const path = path.join(__dirname, 'transcription.txt');
+    const transcriptionText = fs.readFileSync(path, 'utf-8');
+    const transcriptions = transcriptionText.split('\n');
+    res.json(transcriptions);
+  });
 
-// Start the app
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-console.log(`App listening on port ${port}`);
-});
-
+  // Start the app
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+  });
+})
