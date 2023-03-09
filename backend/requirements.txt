@@ -1,5 +1,5 @@
 Flask==2.0.2
-Flask-Cors==3.0.10
+Flask-Cors==0.0.5
 dotenv==0.19.1
 json5==0.9.6
 openai==0.10.5
