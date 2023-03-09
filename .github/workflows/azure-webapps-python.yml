@@ -38,7 +38,7 @@ jobs:
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
-          name: backend-package
+          name: python-app
           path: backend
 
   deploy:
