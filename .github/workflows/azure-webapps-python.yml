@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: python-app
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path:  ${{ github.workspace }}/backend
 
   deploy:
     permissions:
@@ -63,6 +63,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          package:  ${{ github.workspace }}/backend
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: production
