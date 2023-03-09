@@ -38,9 +38,8 @@ jobs:
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
-          name: python-app
+          name: backend-package
           path: backend
-        working-directory: ${{ github.workspace }}
 
   deploy:
     permissions:
