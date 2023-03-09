@@ -66,6 +66,6 @@ jobs:
         with:
           app-name: openai-whisper-react-demo
           package: './backend'
-          publish-profile: AZURE_WEBAPP_PUBLISH_PROFILE
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: production
 
