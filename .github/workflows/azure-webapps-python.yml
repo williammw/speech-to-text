@@ -2,7 +2,7 @@ name: Build and deploy Python app to Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: openai-whisper-react-demo
-  AZURE_WEBAPP_PACKAGE_PATH: './tree/master/backend'
+  AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }}/backend
   PYTHON_VERSION: '3.7'              
 
 on:
@@ -32,7 +32,7 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip3 install -r tree/master/backend/requirements.txt
+        run: pip3 install -r backend/requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: python-app
-          path: tree/master/backend
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   deploy:
     permissions:
@@ -58,18 +58,11 @@ jobs:
           name: python-app
           path: .
 
-      
-
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: openai-whisper-react-demo
-          package: ${{ github.workspace }}/tree/master/backend
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           slot-name: production
-        env:
-          AZURE_WEBAPP_NAME: openai-whisper-react-demo
-          AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }}/tree/master/backend
-          PYTHON_VERSION: 3.7
-
