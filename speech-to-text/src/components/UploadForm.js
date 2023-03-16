@@ -181,13 +181,13 @@ const UploadForm = () => {
                     {uploadProgress === 100 && (
                       <FaSpinner className="h-5 w-5 mr-3 text-white animate-spin" />
                     )}
-                    <span>Uploading ...</span>
+                    <span>Processing ...</span>
                   </div>
                 </>
               ) : (
                 <div className="flex items-center justify-center">
                   <FaCloudUploadAlt className="mr-2" />
-                  <span>Upload</span>
+                  <span>Process</span>
                 </div>
               )}
             </button>

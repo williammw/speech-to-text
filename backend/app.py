@@ -9,12 +9,11 @@ from pydub import AudioSegment
 import json
 import uuid
 from flask_cors import CORS
+import config
 
 # Load environment variables from .env file
 load_dotenv()
 
-# Set OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Define function to convert Unicode to readable format and save to file
 
@@ -23,6 +22,7 @@ def save_transcription(transcription_text, save_dir):
     transcription_path = os.path.join(save_dir, 'transcription.txt')
 
     with open(transcription_path, 'w') as f:
+        # f.write("WEBVTT\n\n")
         f.write(transcription_text)
 
     return transcription_path
@@ -33,8 +33,12 @@ app = Flask(__name__)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config.from_object(config)
+
+# Set OpenAI API key
+openai.api_key = app.config['OPENAI_API_KEY']
 # Define endpoint to serve index.html
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000"]}})
 
 
 @app.route("/")
@@ -64,34 +68,39 @@ def transcribe():
             segment = audio[i:i+segment_length]
             audio_segments.append(segment)
 
+            # Export the segment to an MP3 file for debugging
+            segment.export(os.path.join(
+                app.config['TMP_AUDIO_FOLDER'], f'segment_{i}.mp3'), format='mp3')
+
         # Transcribe each audio segment using the Whisper API
         transcriptions = []
-        combined_segment = None
         for i, segment in enumerate(audio_segments):
-            # Combine segment with previous segment(s) if length is less than segment length
-            if combined_segment is not None and len(combined_segment) + len(segment) < segment_length:
-                combined_segment += segment
-                continue
-            elif combined_segment is not None:
-                segment = combined_segment + segment
-                combined_segment = None
-
+            print(i)
             # Transcribe the audio using the OpenAI API
             with NamedTemporaryFile(suffix='.mp3') as temp_audio_file:
                 segment.export(temp_audio_file.name, format='mp3')
+                print(temp_audio_file.name)
                 transcription = openai.Audio.transcribe(
-                    "whisper-1", temp_audio_file)
-                transcriptions.append(transcription['text'])
+                    "whisper-1", temp_audio_file, temperature=0, language='zh', prompt='請把香港立法會會議記錄的發言內容轉錄出來。記錄包括來自各方與會者的演講，包括議員、官員和秘書處人員等。錄音中的語言主要是粵語，但也可能包括普通話和英語。請儘可能準確地轉錄發言內容。')
+                print(transcription)
+                # Save the transcription to a file
+                save_path = os.path.join(
+                    app.config['TMP_TEXT_FOLDER'], f'transcription_{i}.txt')
+                with open(save_path, 'w', encoding='utf-8') as f:
+                    f.write(transcription['text'])
 
-        # Concatenate the transcriptions into a single string
-        transcription_text = '\n'.join(transcriptions)
+        # Combine all text files into a single file
+        save_path = os.path.join(app.config['TMP_TEXT_FOLDER'], 'final.txt')
+        with open(save_path, 'w', encoding='utf-8') as f:
+            for i in range(len(audio_segments)):
+                text_file_path = os.path.join(
+                    app.config['TMP_TEXT_FOLDER'], f'transcription_{i}.txt')
+                with open(text_file_path, 'r', encoding='utf-8') as tf:
+                    f.write(tf.read())
+                    f.write('\n\n')
 
         # End the timer
         end_time = time.time()
-
-        # Save the transcription to a file
-        save_dir = os.path.dirname(os.path.abspath(__file__))
-        transcription_path = save_transcription(transcription_text, save_dir)
 
         # Calculate the execution time
         execution_time = end_time - start_time
@@ -105,8 +114,7 @@ def transcribe():
 # Define endpoint to download transcription file
 @app.route("/download/transcription")
 def download():
-    path = os.path.join(os.path.dirname(
-        os.path.abspath(__file__)), "transcription.txt")
+    path = os.path.join(app.config['TMP_TEXT_FOLDER'], 'final.txt')
     download_name = "transcription_" + str(uuid.uuid4())
     return send_file(
         path,
@@ -121,7 +129,7 @@ def download():
 @app.route("/api/transcriptions")
 def transcriptions():
     path = os.path.join(os.path.dirname(
-        os.path.abspath(__file__)), "transcription.txt")
+        os.path.abspath(__file__)), "tmp/texts/final.txt")
     with open(path, 'r') as f:
         transcription_text = f.read()
     transcriptions = transcription_text.split("\n")
